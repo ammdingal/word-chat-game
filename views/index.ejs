@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        const socket = io();
+        let username = prompt('Enter your name:');
+        socket.emit('new_user', username);
+
+        socket.on('all_messages', function(messages){
+            for (let i = 0; i < messages.length; i++){
+                let element = document.createElement('p');
+                element.innerHTML = messages[i];
+                $('#box').append(element);
+            }
+        });
+
+        socket.on('user_joined', userStatus);
+        socket.on('user_left', userStatus);
+
+        function userStatus(message){
+            let element = $('<p>').html(message);
+            $('#box').append(element);
+        }
+
+        const correctWord = 'socket';
+
+        $('form').submit(function(data){
+            data.preventDefault();
+            let chatInput = $('#chat').val();
+            if(chatInput === correctWord){
+                socket.emit('user_won', "<span class='win'>" + username + ' won! ' + correctWord + ' is the exact word!' + "</span>");
+            } 
+            else{
+                socket.emit('chat_message', username + ': ' + chatInput);
+            }
+            $('#chat').val('');
+            return false;
+        });
+
+        socket.on('new_chat_message', function(message){
+            let element = $('<p>').html(message);
+            $('#box').append(element);
+        });
+    });
+    </script>      
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Guess the Word:</h1>
+        <h2 id="word">s _ _ _ e _</h2>
+        <div id="box">
+        </div>
+        <form>
+            <input type="text" id="chat" name="chat" placeholder="enter your guess word here">
+            <input type="submit" id="submit">
+        </form>
+    </div>
+</body>
+</html>

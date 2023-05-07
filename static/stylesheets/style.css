@@ -1,0 +1,45 @@
+h1, h2{
+    text-align: center;
+}
+    #box{
+        width: 25%;
+        margin: 0 auto;
+        border: 2px solid black;
+        height: 500px;
+        overflow-y: scroll;
+    }
+    #user{
+        text-align: left;
+        font-weight: bold;
+        margin-left: 10px;
+    }
+    form{
+        text-align: center;
+    }
+        form input {
+            display: block; /* make the inputs a block element */
+            margin: 0 auto; /* center the inputs horizontally */
+            border: 1px solid black;
+            background-color: white;
+        }
+        #chat{
+            width: 25%;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            line-height: 20px;
+        }
+        #submit{
+            box-shadow: 2px 2px black;
+            display: block;
+        }
+        p{
+            margin-left: 10px;
+            word-wrap: break-word;
+        }
+        .win {
+            color: green;
+            font-style: italic;
+        }
+        .status{
+            color: darkorange;
+        }
